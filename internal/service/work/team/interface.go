@@ -14,5 +14,13 @@ type TeamService interface {
 }
 
 func NewWorkTeamService() *WorkTeamService {
-	return &WorkTeamService{}
+	entitiesMock := make(map[uint64]work.Team)
+
+	for _, item := range teamMocks {
+		entitiesMock[item.ID] = item
+	}
+
+	return &WorkTeamService{
+		entities: entitiesMock,
+	}
 }

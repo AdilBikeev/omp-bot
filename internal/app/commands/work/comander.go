@@ -13,34 +13,34 @@ type Commander interface {
 	HandleCommand(message *tgbotapi.Message, commandPath path.CommandPath)
 }
 
-type WorkCommander struct {
+type workCommander struct {
 	bot           *tgbotapi.BotAPI
 	teamCommander Commander
 }
 
 func NewWorkCommander(
 	bot *tgbotapi.BotAPI,
-) *WorkCommander {
-	return &WorkCommander{
+) *workCommander {
+	return &workCommander{
 		bot:           bot,
 		teamCommander: team.NewWorkTeamCommander(bot),
 	}
 }
 
-func (c *WorkCommander) HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath) {
+func (c *workCommander) HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath) {
 	switch callbackPath.Subdomain {
 	case "team":
 		c.teamCommander.HandleCallback(callback, callbackPath)
 	default:
-		log.Printf("WorkCommander.HandleCallback: unknown team - %s", callbackPath.Subdomain)
+		log.Printf("workCommander.HandleCallback: unknown team - %s", callbackPath.Subdomain)
 	}
 }
 
-func (c *WorkCommander) HandleCommand(msg *tgbotapi.Message, commandPath path.CommandPath) {
+func (c *workCommander) HandleCommand(msg *tgbotapi.Message, commandPath path.CommandPath) {
 	switch commandPath.Subdomain {
 	case "team":
 		c.teamCommander.HandleCommand(msg, commandPath)
 	default:
-		log.Printf("WorkCommander.HandleCommand: unknown team - %s", commandPath.Subdomain)
+		log.Printf("workCommander.HandleCommand: unknown team - %s", commandPath.Subdomain)
 	}
 }

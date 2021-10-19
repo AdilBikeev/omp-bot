@@ -6,7 +6,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/ozonmp/omp-bot/internal/app/path"
 	workTeamService "github.com/ozonmp/omp-bot/internal/service/work/team"
-	//"github.com/ozonmp/omp-bot/internal/app/commands/work/team"
 )
 
 type TeamCommander interface {
@@ -24,29 +23,39 @@ type WorkTeamCommander struct {
 	service workTeamService.TeamService
 }
 
-func (c *WorkTeamCommander) HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath) {
-	switch callbackPath.Subdomain {
-	case "team":
-		c.HandleCallback(callback, callbackPath)
-	default:
-		log.Printf("WorkCommander.HandleCallback: unknown team - %s", callbackPath.Subdomain)
-	}
-}
-
-func (c *WorkTeamCommander) HandleCommand(msg *tgbotapi.Message, commandPath path.CommandPath) {
-	switch commandPath.Subdomain {
-	case "team":
-		c.HandleCommand(msg, commandPath)
-	default:
-		log.Printf("WorkCommander.HandleCommand: unknown team - %s", commandPath.Subdomain)
-	}
-}
-
 func NewWorkTeamCommander(bot *tgbotapi.BotAPI) *WorkTeamCommander {
 	service := workTeamService.NewWorkTeamService()
 
 	return &WorkTeamCommander{
 		bot:     bot,
 		service: service,
+	}
+}
+
+func (c *WorkTeamCommander) HandleCallback(callback *tgbotapi.CallbackQuery, callbackPath path.CallbackPath) {
+	switch callbackPath.CallbackName {
+	case "list":
+		c.CallbackList(callback, callbackPath)
+	default:
+		log.Printf("WorkTeamCommander.HandleCallback: unknown callback name: %s", callbackPath.CallbackName)
+	}
+}
+
+func (c *WorkTeamCommander) HandleCommand(msg *tgbotapi.Message, commandPath path.CommandPath) {
+	switch commandPath.CommandName {
+	case "help":
+		c.Help(msg)
+	case "get":
+		c.Get(msg)
+	case "list":
+		c.List(msg)
+	case "delete":
+		c.Delete(msg)
+	case "new":
+		c.New(msg)
+	case "edit":
+		c.Edit(msg)
+	default:
+		log.Printf("WorkTeamCommander.HandleCommand: unknown CommandName: %s", commandPath.CommandName)
 	}
 }

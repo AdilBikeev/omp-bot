@@ -83,3 +83,7 @@ func (w *WorkTeamService) Remove(teamID uint64) (bool, error) {
 
 	return true, nil
 }
+
+func (w *WorkTeamService) Count() uint64 {
+	return uint64(len(w.entities))
+}

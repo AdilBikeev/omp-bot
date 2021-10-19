@@ -10,6 +10,7 @@ type TeamService interface {
 	Create(work.Team) (uint64, error)
 	Update(teamID uint64, team work.Team) error
 	Remove(teamID uint64) (bool, error)
+	Count() uint64
 }
 
 func NewWorkTeamService() *WorkTeamService {

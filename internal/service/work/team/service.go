@@ -5,8 +5,6 @@ import (
 	"log"
 
 	"github.com/ozonmp/omp-bot/internal/model/work"
-	// 	"errors"
-	// "fmt"
 )
 
 type WorkTeamService struct {

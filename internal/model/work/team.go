@@ -1,7 +1,6 @@
 package work
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -22,11 +21,6 @@ type Team struct {
 }
 
 func (t *Team) String() string {
-	str, _ := json.Marshal(t)
-	return fmt.Sprintf(`%s`, string(str))
-}
-
-func (t *Team) PrettyPrint() string {
 	return fmt.Sprintf(
 		prettyPrintFormat,
 		t.ID,
